@@ -1,0 +1,234 @@
+<!-- <!DOCTYPE html>
+ <html lang="en">
+<head>
+    <title>Fake Product Identifier</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+   
+</head>
+<body>
+   <input type="text" id="product_id" placeholder="Enter product id">
+       <button onclick="registerProduct()">Register</button>
+
+    
+       
+</body>
+</html>  -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fake Product Identifier</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/e0/40/7c/e0407c8de9ac65037f069a8324c28bf0.jpg">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="./public/css/style.css"> -->
+    <style>
+        .c1{
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+            </a>
+
+            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 fs-4">
+
+                Fake Product Identifier
+            </div>
+            <!-- <img src="./public/image/logo2.png" alt="" width="150" height="110"> -->
+
+        </div>
+    </div>
+</header>
+
+<div class="px-4 py-5 my-5 text-center">
+    <img class="d-block mx-auto mb-4" src="https://i.pinimg.com/564x/e0/40/7c/e0407c8de9ac65037f069a8324c28bf0.jpg" alt="" width="150" height="110">
+    <h1 class="display-5 fw-bold">Minimize Counterfeit Products</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">As online retailers and market places aggressively adds thousands of merchants to their platforms, unauthorized white labeling, fake product listing and image theft have emerged as e-commerce risks.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+
+            <input class="form-control form-control-dark text-bg-dark" type="text" id="product_id" placeholder="Enter product id">
+            <button type="button" onclick="getProductStatus()" class="btn btn-primary btn-lg px-4 gap-3">Register</button>
+            <button type="button" onclick="listProduct()" class="btn btn-primary btn-lg px-4 gap-3" >Enlist</button>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script>
+    let accounts;
+
+    const connectMetamask = async () => {
+        accounts = await ethereum.request({method: "eth_requestAccounts"});
+        connectContract(accounts);
+    };
+
+    const connectContract = async () => {
+        const Address = "0x0dCF27abDc8f6AF928d4979007003D03e923E823";
+
+        const ABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "name": "listProduct",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bool",
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "name": "getProductName",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "string",
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "name": "getProductStatus",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "int256",
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "name": "registerProduct",
+                "outputs": [],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "name": "checkEnlistment",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bool",
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        window.web3 = await new Web3(window.ethereum);
+        window.contract = await new window.web3.eth.Contract(ABI, Address);
+
+        // const queryString = window.location.search;
+        // const urlParams = new URLSearchParams(queryString);
+
+        // await getProductStatus(urlParams.get('product_id'));
+    };
+
+    connectMetamask();
+
+    const listProduct = async () => {
+        let product_id = document.getElementById('product_id').value;
+        document.getElementById('product_id').value = "";
+
+        let status = await window.contract.methods.checkEnlistment(product_id).call();
+
+        if (status === true)
+        {
+            await window.contract.methods.listProduct(product_id).send({from: accounts[0]});
+            swal("Success!", "Product enlisted successfully!", "success");
+        }
+        else
+        {
+            swal("Error!", "Product is already enlisted.Cannot enlist product again !", "error");
+        }
+    };
+
+    // const getProductName = async () => {
+    //     let product_name = document.getElementById('product_id').value;
+    //     document.getElementById('product_id').value = "";
+    //     let data = await window.contract.methods.getProductName(product_name).call();
+    //     alert(data);
+    // };
+    //
+
+    const getProductStatus = async () => {
+        let product_id = document.getElementById('product_id').value;
+        document.getElementById('product_id').value = "";
+        let data = await window.contract.methods.getProductStatus(product_id).call();
+
+        if (data == -1)
+        {
+            await registerProduct(product_id);
+            swal("Success!", "Product registered successfully!", "success");
+        }
+        else if (data == 1)
+        {
+            swal("Failure!", "Product is already registered. This may be a fake product !", "error");
+        }
+        else
+        {
+            swal("Warning!", "Product does not exist. Please recheck product id !", "warning");
+        }
+    };
+
+    const registerProduct = async (product_id) => {
+        await window.contract.methods.registerProduct(product_id).send({from: accounts[0]});
+    };
+
+</script>
+</body>
+</html>
+
+
+
+
